@@ -62,7 +62,7 @@ CLASS zcl_datetime DEFINITION
         end_of_day   TYPE tims VALUE '235959' ##NO_TEXT,
       END OF c_times .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Auflistung Wochentage</p>
+      "! <p class="shorttext synchronized" lang="de">Enum day of week</p>
       BEGIN OF c_day_of_week,
         "! Monday
         monday    TYPE ty_day_of_week VALUE 1,
@@ -222,7 +222,7 @@ CLASS zcl_datetime DEFINITION
     CLASS-METHODS from_now
       RETURNING
         VALUE(pr_o_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Instantiierung mit einem Timestamp</p>
+    "! <p class="shorttext synchronized" lang="de">Creating an instance based on a timestamp</p>
     "!
     "! @parameter pi_ts         | <p class="shorttext synchronized" lang="de">Timestamp</p>
     "! @parameter pr_o_datetime | <p class="shorttext synchronized" lang="de">Datumsfunktionen</p>
@@ -231,13 +231,13 @@ CLASS zcl_datetime DEFINITION
         !pi_ts               TYPE timestamp
       RETURNING
         VALUE(pr_o_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Instantierung aktuellem Datum &amp; Uhrzeit 00:00:00</p>
+    "! <p class="shorttext synchronized" lang="de">Creating an instance with current date &amp; time 00:00:00</p>
     "!
     "! @parameter pr_o_datetime | <p class="shorttext synchronized" lang="de">Datumsfunktionen</p>
     CLASS-METHODS from_today
       RETURNING
         VALUE(pr_o_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Bestimmt  den maximalen Wert</p>
+    "! <p class="shorttext synchronized" lang="de">Returns max value of 2 zcl_datetime instances</p>
     "!
     "! @parameter pi_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
     CLASS-METHODS max
@@ -247,7 +247,7 @@ CLASS zcl_datetime DEFINITION
         !pi_ignore_time   TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(pr_o_max)   TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Bestimmt  den minimalen Wert</p>
+    "! <p class="shorttext synchronized" lang="de">Returns min value of 2 zcl_datetime instances</p>
     "!
     "! @parameter pi_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
     CLASS-METHODS min
@@ -257,7 +257,7 @@ CLASS zcl_datetime DEFINITION
         !pi_ignore_time   TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(pr_o_min)   TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Bestimmt zw. 2 DateTime Objekten den min. &amp; max. Wert</p>
+    "! <p class="shorttext synchronized" lang="de">Detrmines between 2 DateTimes the min &amp; max value</p>
     "!
     "! @parameter pi_ignore_time    | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
     "! @parameter pe_o_min_datetime | <p class="shorttext synchronized" lang="de">Datumsfunktionen</p>
