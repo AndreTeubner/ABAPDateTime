@@ -1,4 +1,4 @@
-"! <p class="shorttext synchronized" lang="de">DateTime object</p>
+"! <p class="shorttext synchronized" lang="en">DateTime object</p>
 CLASS zcl_datetime DEFINITION
   PUBLIC
   FINAL
@@ -6,36 +6,46 @@ CLASS zcl_datetime DEFINITION
 
   PUBLIC SECTION.
 
-    "! <p class="shorttext synchronized" lang="de">Type of rounding</p>
+
+    "! <p class="shorttext synchronized" lang="en">Type of rounding</p>
     TYPES ty_rounding TYPE i .
     TYPES ty_diff TYPE decfloat16 .
-    "! <p class="shorttext synchronized" lang="de">Day of week</p>
+
+    "! <p class="shorttext synchronized" lang="en">Day of week</p>
     TYPES ty_day_of_week TYPE i .
     TYPES:
-      "! <p class="shorttext synchronized" lang="de">Structure with reference to CL_DATETIME</p>
+
+      "! <p class="shorttext synchronized" lang="en">Structure with reference to CL_DATETIME</p>
       BEGIN OF ty_datetime_element,
         o_datetime TYPE REF TO zcl_datetime,
       END OF ty_datetime_element .
     TYPES:
-      "! <p class="shorttext synchronized" lang="de">ISO week</p>
+
+      "! <p class="shorttext synchronized" lang="en">ISO week</p>
       BEGIN OF ty_iso_week,
         week        TYPE i,
         year        TYPE i,
         day_of_week TYPE ty_day_of_week,
       END OF ty_iso_week .
     TYPES:
-      "! <p class="shorttext synchronized" lang="de">TT: List of datetime elements</p>
-      ty_t_datetime_list TYPE STANDARD TABLE OF ty_datetime_element WITH EMPTY KEY .
-    "! <p class="shorttext synchronized" lang="de">Felder Datum &amp; Uhrzeit</p>
-    TYPES: ty_datetime_field TYPE string.
 
-    "! <p class="shorttext synchronized" lang="de">Date of object</p>
+      "! <p class="shorttext synchronized" lang="en">TT: List of datetime elements</p>
+      ty_t_datetime_list TYPE STANDARD TABLE OF ty_datetime_element WITH EMPTY KEY .
+
+    TYPES:
+           "! <p class="shorttext synchronized" lang="en">Fields Date &amp; Time</p>
+           ty_datetime_field TYPE string.
+
+
+    "! <p class="shorttext synchronized" lang="en">Date</p>
     DATA m_date TYPE dats READ-ONLY .
-    "! <p class="shorttext synchronized" lang="de">Time of object</p>
+
+    "! <p class="shorttext synchronized" lang="en">Time</p>
     DATA m_time TYPE time READ-ONLY .
 
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Fields date & time</p>
+
+      "! <p class="shorttext synchronized" lang="en">Fields date &amp; time</p>
       BEGIN OF c_fields,
         "! Second
         second TYPE ty_datetime_field VALUE 'SECOND'  ##NO_TEXT,
@@ -53,7 +63,7 @@ CLASS zcl_datetime DEFINITION
         year   TYPE ty_datetime_field VALUE 'YEAR'    ##NO_TEXT,
       END  OF c_fields .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Wellknown times</p>
+      "! <p class="shorttext synchronized" lang="en">Wellknown times</p>
       BEGIN OF c_times,
         "! Begin of day.
         begin_of_day TYPE tims VALUE '000000' ##NO_TEXT,
@@ -63,7 +73,7 @@ CLASS zcl_datetime DEFINITION
         end_of_day   TYPE tims VALUE '235959' ##NO_TEXT,
       END OF c_times .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Enum day of week</p>
+      "! <p class="shorttext synchronized" lang="en">Enum day of week</p>
       BEGIN OF c_day_of_week,
         "! Monday
         monday    TYPE ty_day_of_week VALUE 1,
@@ -81,7 +91,7 @@ CLASS zcl_datetime DEFINITION
         sunday    TYPE ty_day_of_week VALUE 7,
       END OF c_day_of_week .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Auflistung Monate</p>
+      "! <p class="shorttext synchronized" lang="en">Enum months</p>
       BEGIN OF c_month,
         "! January
         january   TYPE i VALUE 1,
@@ -108,10 +118,11 @@ CLASS zcl_datetime DEFINITION
         "! December
         december  TYPE i VALUE 12,
       END OF c_month .
-    "! <p class="shorttext synchronized" lang="de">UTC timezone</p>
+    "! <p class="shorttext synchronized" lang="en">UTC timezone</p>
     CONSTANTS c_utc TYPE tznzone VALUE 'UTC' ##NO_TEXT.
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Constants for days / years</p>
+
+      "! <p class="shorttext synchronized" lang="en">Constants for days / years</p>
       BEGIN OF c_day_of_year,
         "! First day of year. Always 1st of January
         first(4)                   TYPE c VALUE '0101',
@@ -123,7 +134,7 @@ CLASS zcl_datetime DEFINITION
         max_days_in_none_leap_year TYPE i VALUE 365,
       END OF c_day_of_year .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">Mode rounding</p>
+      "! <p class="shorttext synchronized" lang="en">Mode rounding</p>
       BEGIN OF c_rouding,
         "!  Round away from zero if value is exactly half
         round_half_up   TYPE ty_rounding VALUE cl_abap_math=>round_half_up,
@@ -143,7 +154,8 @@ CLASS zcl_datetime DEFINITION
         round_nothing   TYPE ty_rounding VALUE -1,
       END OF c_rouding .
     CONSTANTS:
-      "! <p class="shorttext synchronized" lang="de">General constants for date calculations</p>
+
+      "! <p class="shorttext synchronized" lang="en">General constants for date calculations</p>
       BEGIN OF c_time_constants,
         "! Seconds per day (24 hours)
         num_seconds_per_day         TYPE i          VALUE 86400,
@@ -167,16 +179,13 @@ CLASS zcl_datetime DEFINITION
         num_days_per_none_leap_year TYPE i          VALUE 365,
       END OF c_time_constants .
 
-    "! <p class="shorttext synchronized" lang="de">Create a list of DateTime objects</p>
+    "! <p class="shorttext synchronized" lang="en">Create a list of DateTime objects with an intervall</p>
     "!
-    "! The function generate a list of objects, which are created in intervals and have
-    "! the respective distance to the predecessor.
-    "!
-    "! @parameter io_start         | <p class="shorttext synchronized" lang="de">Starting at DateTime</p>
-    "! @parameter iv_increment_field | <p class="shorttext synchronized" lang="de">Which field should be incremented?</p>
-    "! @parameter iv_increment_value | <p class="shorttext synchronized" lang="de">Value to increment</p>
-    "! @parameter iv_num_of_elements | <p class="shorttext synchronized" lang="de">Number of passes</p>
-    "! @parameter rt_datetime_list | <p class="shorttext synchronized" lang="de">List of DateTime objects</p>
+    "! @parameter io_start           | <p class="shorttext synchronized" lang="en">Starting at DateTime</p>
+    "! @parameter iv_increment_field | <p class="shorttext synchronized" lang="en">Which field should be incremented?</p>
+    "! @parameter iv_increment_value | <p class="shorttext synchronized" lang="en">Value to increment</p>
+    "! @parameter iv_num_of_elements | <p class="shorttext synchronized" lang="en">Number of passes</p>
+    "! @parameter rt_datetime_list   | <p class="shorttext synchronized" lang="en">List of DateTime objects</p>
     CLASS-METHODS create_list
       IMPORTING
         !io_start               TYPE REF TO zcl_datetime
@@ -185,12 +194,12 @@ CLASS zcl_datetime DEFINITION
         !iv_num_of_elements     TYPE i
       RETURNING
         VALUE(rt_datetime_list) TYPE ty_t_datetime_list .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance based on date &amp; time</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance based on date &amp; time</p>
     "!
-    "! @parameter iv_date                    | <p class="shorttext synchronized" lang="de">Date</p>
-    "! @parameter iv_time                    | <p class="shorttext synchronized" lang="de">Time</p>
-    "! @parameter po_datetime              | <p class="shorttext synchronized" lang="de">DateTime</p>
-    "! @raising   cx_parameter_invalid_range | <p class="shorttext synchronized" lang="de">Invalid parameters</p>
+    "! @parameter iv_date                    | <p class="shorttext synchronized" lang="en">Date</p>
+    "! @parameter iv_time                    | <p class="shorttext synchronized" lang="en">Time</p>
+    "! @raising   cx_parameter_invalid_range | <p class="shorttext synchronized" lang="en">Invalid parameters</p>
     CLASS-METHODS from_date
       IMPORTING
         !iv_date           TYPE dats
@@ -199,48 +208,54 @@ CLASS zcl_datetime DEFINITION
         VALUE(ro_datetime) TYPE REF TO zcl_datetime
       RAISING
         cx_parameter_invalid_range .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance based on ISO 8601 timestamp</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance based on ISO 8601 timestamp</p>
     "!
-    "! @parameter iv_iso8601    | <p class="shorttext synchronized" lang="de">ISO timestamp like 2021-01-01T01:01:01+01:00</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime</p>
+    "! @parameter iv_iso8601  | <p class="shorttext synchronized" lang="en">ISO timestamp like 2021-01-01T01:01:01+01:00</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime</p>
     CLASS-METHODS from_iso_timestamp
       IMPORTING
         !iv_iso8601        TYPE string
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance based on a timestamp</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance based on a timestamp</p>
     "!
-    "! @parameter iv_ts         | <p class="shorttext synchronized" lang="de">Timestamp</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_ts       | <p class="shorttext synchronized" lang="en">Timestamp</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     CLASS-METHODS from_long_timestamp
       IMPORTING
         !iv_ts             TYPE timestampl
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance based current date &amp; time</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance based current date &amp; time</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     CLASS-METHODS from_now
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance based on a timestamp</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance based on a timestamp</p>
     "!
-    "! @parameter iv_ts         | <p class="shorttext synchronized" lang="de">Timestamp</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_ts         | <p class="shorttext synchronized" lang="en">Timestamp</p>
+    "! @parameter pr_o_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     CLASS-METHODS from_timestamp
       IMPORTING
         !iv_ts               TYPE timestamp
       RETURNING
         VALUE(pr_o_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Creating an instance with current date &amp; time 00:00:00</p>
+
+    "! <p class="shorttext synchronized" lang="en">Creating an instance with current date &amp; time 00:00:00</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     CLASS-METHODS from_today
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Returns max value of 2 zcl_datetime instances</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns max of 2 DateTime objects</p>
     "!
-    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     CLASS-METHODS max
       IMPORTING
         !io_datetime_01 TYPE REF TO zcl_datetime
@@ -248,9 +263,10 @@ CLASS zcl_datetime DEFINITION
         !iv_ignore_time TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(ro_max)   TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Returns min value of 2 zcl_datetime instances</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns min of 2 DateTime objects</p>
     "!
-    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     CLASS-METHODS min
       IMPORTING
         !io_datetime_01 TYPE REF TO zcl_datetime
@@ -258,11 +274,12 @@ CLASS zcl_datetime DEFINITION
         !iv_ignore_time TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(ro_min)   TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Detrmines between 2 DateTimes the min &amp; max value</p>
+
+    "! <p class="shorttext synchronized" lang="en">Determines of 2 DateTimes the min &amp; max value</p>
     "!
-    "! @parameter iv_ignore_time    | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
-    "! @parameter eo_min_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter eo_max_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_ignore_time  | <p class="shorttext synchronized" lang="en">Ignore time?</p>
+    "! @parameter eo_min_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter eo_max_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     CLASS-METHODS min_max
       IMPORTING
         !io_datetime_01  TYPE REF TO zcl_datetime
@@ -271,156 +288,175 @@ CLASS zcl_datetime DEFINITION
       EXPORTING
         !eo_min_datetime TYPE REF TO zcl_datetime
         !eo_max_datetime TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Ändern eines Felds (Stunde, Tag etc.) im Datum</p>
+
+    "! <p class="shorttext synchronized" lang="en">Changes a field of date (e.g Hour, Day...)</p>
     "!
-    "! @parameter iv_field      | <p class="shorttext synchronized" lang="de">Feld im Datum (Stunde, Tag etc.)</p>
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Wert (negative Wert = Subtraktion)</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">Instanz Datetime-Objekt für Method Chaining</p>
+    "! @parameter iv_field    | <p class="shorttext synchronized" lang="en">Fields of DateTime (hour, minute, month...)</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Value (negative values = sub)</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">Instance of DateTime object for method chaining</p>
     METHODS add
       IMPORTING
         !iv_field          TYPE ty_datetime_field
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Tage</p>
+
+
+    "! <p class="shorttext synchronized" lang="en">Add days</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Tage</p>
-    "! @parameter ro_datetime   | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of days</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_days
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Stunden</p>
+
+
+    "! <p class="shorttext synchronized" lang="en">Add hours</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Stunden</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of hours</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_hours
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Minuten</p>
+
+    "! <p class="shorttext synchronized" lang="en">Add minutes</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Minuten</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of Minutes</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_minutes
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Monate</p>
-    "!
-    "! @parameter pi_value      | <p class="shorttext synchronized" lang="de">Anzahl Wochen</p>
-    "! @parameter pr_o_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+
+    "! <p class="shorttext synchronized" lang="en">Add month</p>
     METHODS add_months
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Sekunden</p>
+
+    "! <p class="shorttext synchronized" lang="en">Add seconds</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Sekunden</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of seconds</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_seconds
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Wochen</p>
+
+    "! <p class="shorttext synchronized" lang="en">Add weeks</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Wochen</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of weeks</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_weeks
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Hinzufügen Jahre</p>
+
+    "! <p class="shorttext synchronized" lang="en">Add years</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Jahre</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of years</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS add_years
       IMPORTING
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Liefert das Datum für das aktuelle Datetime-Object</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the date of current DateTime</p>
     "!
-    "! @parameter rv_date | <p class="shorttext synchronized" lang="de">Datum für das aktuelle Datetime-Object</p>
+    "! @parameter rv_date | <p class="shorttext synchronized" lang="en">Date of current DateTime object</p>
     METHODS as_date
       RETURNING
         VALUE(rv_date) TYPE dats .
-    "! <p class="shorttext synchronized" lang="de">Liefert Datum &amp; Uhrzeit ISO 8601 Zeitstempel</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns a ISO 8601 timestamp of current DateTime</p>
     "!
-    "! @parameter rv_iso_timestamp | <p class="shorttext synchronized" lang="de">ISO 8601 Zeitstempel</p>
+    "! @parameter rv_iso_timestamp | <p class="shorttext synchronized" lang="en">ISO 8601 timestamp</p>
     METHODS as_iso_timestamp
       RETURNING
         VALUE(rv_iso_timestamp) TYPE string .
-    "! <p class="shorttext synchronized" lang="de">Liefert Datum &amp; Uhrzeit als Timestamp</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns a timestamp of current DateTime</p>
     "!
-    "! @parameter rv_timestamp | <p class="shorttext synchronized" lang="de">Datum &amp; Uhrzeit als Timestamp</p>
+    "! @parameter rv_timestamp | <p class="shorttext synchronized" lang="en">Date &amp; Time as timestamp</p>
     METHODS as_long_timestamp
       RETURNING
         VALUE(rv_timestamp) TYPE timestampl .
-    "! <p class="shorttext synchronized" lang="de">Liefert Datum &amp; Uhrzeit als Timestamp</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns a timestamp of current DateTime</p>
     "!
-    "! @parameter rv_timestamp | <p class="shorttext synchronized" lang="de">Datum &amp; Uhrzeit als Timestamp</p>
+    "! @parameter rv_timestamp | <p class="shorttext synchronized" lang="en">Date &amp; Time as timestamp</p>
     METHODS as_timestamp
       RETURNING
         VALUE(rv_timestamp) TYPE timestamp .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datum auf Tagesbeginn</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of day</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS begin_of_day
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datums auf Monatsbeginn</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of month</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS begin_of_month
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datums auf Quartalsbegin</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of quarter</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS begin_of_quarter
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen Datum auf Wochenbeginn</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of week</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS begin_of_week
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datums auf Jahresbeginn</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of year</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS begin_of_year
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Klont das Datetime-Objekt</p>
+
+    "! <p class="shorttext synchronized" lang="en">Clones DateTime object to a new instance</p>
     "!
-    "! @parameter ro_clone | <p class="shorttext synchronized" lang="de">Klon der aktuellen Instanz</p>
+    "! @parameter ro_clone | <p class="shorttext synchronized" lang="en">Clone of current instance</p>
     METHODS clone
       RETURNING
         VALUE(ro_clone) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzt das Datum auf den Wochentag</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set day to a day of week</p>
     "!
-    "! @parameter pi_day_of_week | <p class="shorttext synchronized" lang="de">Wochentag</p>
-    "! @parameter pr_o_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter pi_day_of_week | <p class="shorttext synchronized" lang="en">Day of week</p>
+    "! @parameter pr_o_datetime  | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS day_of_week
       IMPORTING
         !pi_day_of_week      TYPE ty_day_of_week
       RETURNING
         VALUE(pr_o_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Differenz zwischen zwei DateTime-Objekten</p>
+
+    "! <p class="shorttext synchronized" lang="en">Difference between to DateTime objects</p>
     "!
-    "! @parameter io_datetime     | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter iv_field          | <p class="shorttext synchronized" lang="de">Felder Datum &amp; Uhrzeit</p>
-    "! @parameter iv_round_mode     | <p class="shorttext synchronized" lang="de">Rundungsmodus</p>
-    "! @parameter iv_round_decimals | <p class="shorttext synchronized" lang="de">Anzahl Stellen Dezimalanteil Rundung</p>
-    "! @parameter rv_diff           | <p class="shorttext synchronized" lang="de">Differenz</p>
+    "! @parameter io_datetime       | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter iv_field          | <p class="shorttext synchronized" lang="en">Fields date &amp; time</p>
+    "! @parameter iv_round_mode     | <p class="shorttext synchronized" lang="en">Mode of rounding</p>
+    "! @parameter iv_round_decimals | <p class="shorttext synchronized" lang="en">Number of decimals for rounding</p>
+    "! @parameter rv_diff           | <p class="shorttext synchronized" lang="en">Difference</p>
     METHODS diff
       IMPORTING
         !io_datetime       TYPE REF TO zcl_datetime
@@ -429,268 +465,304 @@ CLASS zcl_datetime DEFINITION
         !iv_round_decimals TYPE i DEFAULT 0
       RETURNING
         VALUE(rv_diff)     TYPE ty_diff .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datum auf Tagesende</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to end of day</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS end_of_day
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datum auf Monatsende</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to end of month</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS end_of_month
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datums auf Quartalsbegin</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of quarter</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS end_of_quarter
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen Datum auf Wochenbeginn</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to begin of week</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS end_of_week
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzen des Datums auf Jahresende</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to end of year</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS end_of_year
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Setzt das Datum auf den Montag der ersten Kal.-Woch im Jahr</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set DateTime to monday of 1st calendar week in year</p>
     "!
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS first_calendar_week
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Liefert das Jahrhundert des Datums</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the century of DateTime</p>
     "!
-    "! @parameter rv_century | <p class="shorttext synchronized" lang="de">Das Jahrhundert</p>
+    "! @parameter rv_century | <p class="shorttext synchronized" lang="en">The century</p>
     METHODS get_century
       RETURNING
         VALUE(rv_century) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Namen des Wochentags</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the name of day of week</p>
     "!
-    "! @parameter rv_dayname | <p class="shorttext synchronized" lang="de">Name des Wochentags</p>
+    "! @parameter rv_dayname | <p class="shorttext synchronized" lang="en">Name of day of week</p>
     METHODS get_dayname
       RETURNING
         VALUE(rv_dayname) TYPE string .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Tag im Monat</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the day of month (1..31)</p>
     "!
-    "! @parameter rv_day_of_month | <p class="shorttext synchronized" lang="de">Tag im Monat ( 1-31 )</p>
+    "! @parameter rv_day_of_month | <p class="shorttext synchronized" lang="en">Day in month (1..31)</p>
     METHODS get_day_of_month
       RETURNING
         VALUE(rv_day_of_month) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Tag in der Woche</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns day of week (1..7)</p>
     "!
-    "! @parameter rv_day_of_week | <p class="shorttext synchronized" lang="de">Tag in der Woche</p>
+    "! @parameter rv_day_of_week | <p class="shorttext synchronized" lang="en">Day of week (1..7)</p>
     METHODS get_day_of_week
       RETURNING
         VALUE(rv_day_of_week) TYPE ty_day_of_week .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Tag im Jahr</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the day of year (1..365)</p>
     "!
-    "! @parameter rv_day_of_year | <p class="shorttext synchronized" lang="de">Tag im Jahr (1-365)</p>
+    "! @parameter rv_day_of_year | <p class="shorttext synchronized" lang="en">Day of year (1..365)</p>
     METHODS get_day_of_year
       RETURNING
         VALUE(rv_day_of_year) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Wochentag des 1. Januars im Jahr</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns day of week of 1st of january</p>
     "!
-    "! @parameter iv_year_offset | <p class="shorttext synchronized" lang="de">Offset Bezugsjahr (+1 nächst. Jahr, -1 letzt. Jahr)</p>
-    "! @parameter rv_doom_day    | <p class="shorttext synchronized" lang="de">Wochentag 1. Januars im Jahr</p>
+    "! @parameter iv_year_offset | <p class="shorttext synchronized" lang="en">Offset Bezugsjahr (+1 next year, -1 previous year)</p>
+    "! @parameter rv_doom_day    | <p class="shorttext synchronized" lang="en">Day of week of 1st of januaray</p>
     METHODS get_doom_day
       IMPORTING
         !iv_year_offset    TYPE i DEFAULT 0
       RETURNING
         VALUE(rv_doom_day) TYPE ty_day_of_week .
-    "! <p class="shorttext synchronized" lang="de">Liefert den gregoriansichen Tag</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the gregorian day (days since 1.1.0001)</p>
     "!
-    "! @parameter rv_gregorian_day | <p class="shorttext synchronized" lang="de">Gregoriansicher Tag</p>
+    "! @parameter rv_gregorian_day | <p class="shorttext synchronized" lang="en">Gregorian day</p>
     METHODS get_gregorian_day
       RETURNING
         VALUE(rv_gregorian_day) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert die ISO Woche</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the ISO Week</p>
     "!
-    "! @parameter rs_iso_week | <p class="shorttext synchronized" lang="de">Kalenderwoche</p>
+    "! @parameter rs_iso_week | <p class="shorttext synchronized" lang="en">calendar week</p>
     METHODS get_iso_week
       RETURNING
         VALUE(rs_iso_week) TYPE ty_iso_week .
-    "! <p class="shorttext synchronized" lang="de">Liefert den Monat des Datums</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns month of DateTime</p>
     METHODS get_month
       RETURNING
         VALUE(rv_month) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert die Anzahl der Tage im Monat</p>
+
+    "! <p class="shorttext synchronized" lang="en">Retunrs number of days in month of current DateTime object</p>
     "!
-    "! @parameter rv_number_of_days_of_month | <p class="shorttext synchronized" lang="de">Anzahl der Tage im Monat</p>
+    "! @parameter rv_number_of_days_of_month | <p class="shorttext synchronized" lang="en">Number of days in month</p>
     METHODS get_number_of_days_of_month
       RETURNING
         VALUE(rv_number_of_days_of_month) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert die Anzahl der Tage im Jahr</p>
+
+    "! <p class="shorttext synchronized" lang="en">Retunrs number of days in year of current DateTime object</p>
     "!
-    "! @parameter rv_number_of_days_of_year | <p class="shorttext synchronized" lang="de">Anzahl der Tage im Jahr</p>
+    "! @parameter rv_number_of_days_of_year | <p class="shorttext synchronized" lang="en">Number of days in year</p>
     METHODS get_number_of_days_of_year
       RETURNING
         VALUE(rv_number_of_days_of_year) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert das Quartal des Datum</p>
+
+    "! <p class="shorttext synchronized" lang="en">Retunrs the quarter of current DateTime object (1..4)</p>
     "!
-    "! @parameter rv_quarter | <p class="shorttext synchronized" lang="de">Das Quartal</p>
+    "! @parameter rv_quarter | <p class="shorttext synchronized" lang="en">The quarter</p>
     METHODS get_quarter
       RETURNING
         VALUE(rv_quarter) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Liefert das Datum des letzten Tags im Monat</p>
+
+
+    "! <p class="shorttext synchronized" lang="en">Returns last day of year</p>
     "!
-    "! @parameter rv_last_day_of_month | <p class="shorttext synchronized" lang="de">Letzter Tag im Monat</p>
+    "! @parameter rv_last_day_of_month | <p class="shorttext synchronized" lang="en">Last day of months</p>
     METHODS get_ultimo
       RETURNING
         VALUE(rv_last_day_of_month) TYPE dats .
-    "! <p class="shorttext synchronized" lang="de">Liefert das Jahr des Datums</p>
+
+    "! <p class="shorttext synchronized" lang="en">Returns the year of current DateTime object</p>
     "!
-    "! @parameter rv_year | <p class="shorttext synchronized" lang="de">Das Jahr des Datums</p>
+    "! @parameter rv_year | <p class="shorttext synchronized" lang="en">The year of date</p>
     METHODS get_year
       RETURNING
         VALUE(rv_year) TYPE i .
-    "! <p class="shorttext synchronized" lang="de">Ist das DateTime-Objekt nach dem anderen Objekt?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the other DateTime after this DateTime?</p>
     "!
-    "! @parameter io_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter io_datetime    | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     METHODS is_after
       IMPORTING
         !io_datetime       TYPE REF TO zcl_datetime
         !iv_ignore_time    TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(pr_is_after) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Ist das DateTime-Objekt nach oder gleich dem anderen Objekt?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the other DateTime equal to this DateTime?</p>
     "!
-    "! @parameter io_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter io_datetime    | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     METHODS is_after_or_equal
       IMPORTING
         !io_datetime                TYPE REF TO zcl_datetime
         !iv_ignore_time             TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(pr_is_after_or_equal) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Ist das DateTime-Objekt vor dem anderen Objekt?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the other DateTime before this DateTime?</p>
     "!
-    "! @parameter io_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter io_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter io_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS is_before
       IMPORTING
         !io_datetime        TYPE REF TO zcl_datetime
         !iv_ignore_time     TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(rv_is_before) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Ist das DateTime-Objekt vor oder gleich dem anderen Objekt?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the other DateTime before or equal to this DateTime?</p>
     "!
-    "! @parameter io_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter iV_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter io_datetime    | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     METHODS is_before_or_equal
       IMPORTING
         !io_datetime                 TYPE REF TO zcl_datetime
         !iv_ignore_time              TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(rv_is_before_or_equal) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Ist das DateTime-Objekt gleich dem anderen Objekt?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the other DateTime equal this DateTime?</p>
     "!
-    "! @parameter io_datetime  | <p class="shorttext synchronized" lang="de">DateTime object</p>
-    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="de">Zeitanteil ignorieren?</p>
+    "! @parameter io_datetime    | <p class="shorttext synchronized" lang="en">DateTime object</p>
+    "! @parameter iv_ignore_time | <p class="shorttext synchronized" lang="en">Ignore time?</p>
     METHODS is_equal
       IMPORTING
         !io_datetime        TYPE REF TO zcl_datetime
         !iv_ignore_time     TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(rv_is_before) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Liegt das Datum auf dem letzten eines Monats?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the day of DateTime th last in month?</p>
     "!
-    "! @parameter rv_is_last_day_of_month | <p class="shorttext synchronized" lang="de">Letzter Tag im Monat?</p>
+    "! @parameter rv_is_last_day_of_month | <p class="shorttext synchronized" lang="en">Last day of Month?</p>
     METHODS is_last_day_of_month
       RETURNING
         VALUE(rv_is_last_day_of_month) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Ist das Jahr ein Schaltjahr?</p>
+
+    "! <p class="shorttext synchronized" lang="en">Is the year a leap year?</p>
     "!
-    "! @parameter rv_is_leap | <p class="shorttext synchronized" lang="de">Schaltjahr?</p>
+    "! @parameter rv_is_leap | <p class="shorttext synchronized" lang="en">Leap year?</p>
     METHODS is_leap_year
       RETURNING
         VALUE(rv_is_leap) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="de">Setzen eines Felds (Stunde, Tag etc.) im Datum</p>
+
+    "! <p class="shorttext synchronized" lang="en">Set a Field (day, hour, seconds...)</p>
     "!
-    "! @parameter iv_field      | <p class="shorttext synchronized" lang="de">Felder Datum &amp; Uhrzeit</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_field    | <p class="shorttext synchronized" lang="en">Fields Date &amp; Time</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS set
       IMPORTING
         !iv_field          TYPE ty_datetime_field
         !iv_value          TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Ändern eines Felds (Stunde, Tag etc.) im Datum</p>
+
+    "! <p class="shorttext synchronized" lang="en">Change a Field (day, hour, seconds...)</p>
     "!
-    "! @parameter iv_field      | <p class="shorttext synchronized" lang="de">Feld im Datum (Stunde, Tag etc.)</p>
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Wert (negative Wert = Addition)</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">Instanz Datetime-Objekt für Method Chaining</p>
+    "! @parameter iv_field    | <p class="shorttext synchronized" lang="en">Fields of DateTime (day, hour, second)</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Value (negatives values = add)</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">Instance of current DateTime for method chaining</p>
     METHODS subtract
       IMPORTING
         !iv_field            TYPE ty_datetime_field
         VALUE(iv_value)      TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Tage</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub days</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Tage</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of days</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_days
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Stunden</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub hours</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Stunden</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of hours</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_hours
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Minuten</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub Minutes</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Minuten</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of minutes</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_minutes
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Monate</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub months</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Wochen</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of weeks</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_months
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Sekunden</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub seconds</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Sekunden</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of seconds</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_seconds
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Wochen</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub weeks</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Wochen</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of weeks</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_weeks
       IMPORTING
         !iv_value            TYPE i
       RETURNING
         VALUE(ro_datetime) TYPE REF TO zcl_datetime .
-    "! <p class="shorttext synchronized" lang="de">Abziehen Jahre</p>
+
+    "! <p class="shorttext synchronized" lang="en">Sub years</p>
     "!
-    "! @parameter iv_value      | <p class="shorttext synchronized" lang="de">Anzahl Jahre</p>
-    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="de">DateTime object</p>
+    "! @parameter iv_value    | <p class="shorttext synchronized" lang="en">Number of years</p>
+    "! @parameter ro_datetime | <p class="shorttext synchronized" lang="en">DateTime object</p>
     METHODS sub_years
       IMPORTING
         !iv_value            TYPE i
