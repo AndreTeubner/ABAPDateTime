@@ -123,8 +123,8 @@ CLASS unit_tests IMPLEMENTATION.
     DATA(o_datetime) = zcl_datetime=>from_date( '20210307' ).
 
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-day
-                     pi_value = 3 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-day
+                     iv_value = 3 ).
 
 
     DATA(ts) = o_datetime->as_timestamp( ).
@@ -133,11 +133,11 @@ CLASS unit_tests IMPLEMENTATION.
                                     exp = '20210310000000'
                                     msg = 'Datum +3 Tage fehlerhaft' ).
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-day
-                     pi_value = -5 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-day
+                     iv_value = -5 ).
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-hour
-                     pi_value = -3 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-hour
+                     iv_value = -3 ).
 
     ts = o_datetime->as_timestamp( ).
 
@@ -145,11 +145,11 @@ CLASS unit_tests IMPLEMENTATION.
                                     exp = '20210304210000'
                                     msg = 'Datum -5 Tage - 3 Stunden fehlerhaft' ).
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-week
-                     pi_value = 1 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-week
+                     iv_value = 1 ).
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-hour
-                     pi_value = 3 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-hour
+                     iv_value = 3 ).
 
     ts = o_datetime->as_timestamp( ).
 
@@ -157,10 +157,10 @@ CLASS unit_tests IMPLEMENTATION.
                                         exp = '20210312000000'
                                         msg = 'Datum +1 Woche +3 Stunden fehlerhaft' ).
 
-    o_datetime = zcl_datetime=>from_date( pi_date = '20210228' pi_time = zcl_datetime=>c_times-end_of_day ).
+    o_datetime = zcl_datetime=>from_date( iv_date = '20210228' iv_time = zcl_datetime=>c_times-end_of_day ).
 
-    o_datetime->add( pi_field = zcl_datetime=>c_fields-second
-                     pi_value = 1 ).
+    o_datetime->add( iv_field = zcl_datetime=>c_fields-second
+                     iv_value = 1 ).
 
     ts = o_datetime->as_timestamp( ).
 
@@ -197,7 +197,7 @@ CLASS unit_tests IMPLEMENTATION.
   METHOD add_hours.
 
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->add_hours( 8 ).
 
@@ -229,7 +229,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD add_minutes.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->add_minutes( 8 ).
 
@@ -290,7 +290,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD add_seconds.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->add_seconds( 8 ).
 
@@ -329,7 +329,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD add_weeks.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' ).
 
     o_datetime->add_weeks( 1 ).
 
@@ -351,7 +351,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD add_years.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' ).
 
     o_datetime->add_years( 1 ).
 
@@ -374,7 +374,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD as_date.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' ).
 
     DATA(date) = o_datetime->as_date( ).
 
@@ -382,7 +382,7 @@ CLASS unit_tests IMPLEMENTATION.
                                  exp = '20210307'
                                  msg = 'As date check #01' ).
 
-    o_datetime = zcl_datetime=>from_date( pi_date = '20210331' ).
+    o_datetime = zcl_datetime=>from_date( iv_date = '20210331' ).
 
     date = o_datetime->as_date( ).
 
@@ -390,7 +390,7 @@ CLASS unit_tests IMPLEMENTATION.
                                  exp = '20210331'
                                  msg = 'As date check #02' ).
 
-    o_datetime = zcl_datetime=>from_date( pi_date = '20210401' ).
+    o_datetime = zcl_datetime=>from_date( iv_date = '20210401' ).
 
     date = o_datetime->as_date( ).
 
@@ -442,7 +442,7 @@ CLASS unit_tests IMPLEMENTATION.
   METHOD begin_of_day.
 
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' pi_time = '235959' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' iv_time = '235959' ).
 
     o_datetime->begin_of_day( ).
 
@@ -553,7 +553,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD end_of_day.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' pi_time = '120000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' iv_time = '120000' ).
 
     o_datetime->end_of_day( ).
 
@@ -680,14 +680,14 @@ CLASS unit_tests IMPLEMENTATION.
     ENDTRY.
 
     TRY.
-        o_datetime = zcl_datetime=>from_date( pi_date = '20200229' pi_time = '243030' ).
+        o_datetime = zcl_datetime=>from_date( iv_date = '20200229' iv_time = '243030' ).
         cl_aunit_assert=>fail( msg = 'From date check #04' ).
       CATCH cx_parameter_invalid_range ##NO_HANDLER.
         " Everything is fine. We had expected an exception.
     ENDTRY.
 
     TRY.
-        o_datetime = zcl_datetime=>from_date( pi_date = '20200229' pi_time = '000000' ).
+        o_datetime = zcl_datetime=>from_date( iv_date = '20200229' iv_time = '000000' ).
       CATCH cx_parameter_invalid_range ##NO_HANDLER.
         cl_aunit_assert=>fail( msg = 'From date check #05' ).
     ENDTRY.
@@ -726,8 +726,8 @@ CLASS unit_tests IMPLEMENTATION.
 
     DATA(o_dt_reference) = zcl_datetime=>from_timestamp(  CONV timestamp( |{ current_date }{ current_time }| ) ).
 
-    DATA(delta) = abs( o_datetime->diff( pi_field      = zcl_datetime=>c_fields-second
-                                         pi_o_datetime = o_dt_reference ) ).
+    DATA(delta) = abs( o_datetime->diff( iv_field      = zcl_datetime=>c_fields-second
+                                         io_datetime = o_dt_reference ) ).
 
     " Max delta of one second is okay. Be aware that this test fails in debugger
     " if you arent fast enough...
@@ -901,19 +901,19 @@ CLASS unit_tests IMPLEMENTATION.
 
     DATA(o_datetime) = zcl_datetime=>from_date( '20210131' ).
 
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-year
-                     pi_value = 2020 ).
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-month
-                     pi_value = 3 ).
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-day
-                    pi_value = 1 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-year
+                     iv_value = 2020 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-month
+                     iv_value = 3 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-day
+                    iv_value = 1 ).
 
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-hour
-                   pi_value = 9 ).
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-minute
-                    pi_value = 30 ).
-    o_datetime->set( pi_field = zcl_datetime=>c_fields-second
-                    pi_value = 45 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-hour
+                   iv_value = 9 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-minute
+                    iv_value = 30 ).
+    o_datetime->set( iv_field = zcl_datetime=>c_fields-second
+                    iv_value = 45 ).
 
 
     DATA(ts) = o_datetime->as_timestamp( ).
@@ -1106,7 +1106,7 @@ CLASS unit_tests IMPLEMENTATION.
       " Works as expected...
     ENDIF.
 
-    IF o_other->is_before( pi_o_datetime = o_this pi_ignore_time = abap_false ).
+    IF o_other->is_before( io_datetime = o_this iv_ignore_time = abap_false ).
       " Works as expected...
     ELSE.
       cl_aunit_assert=>fail( msg = 'Is before check #05' ).
@@ -1142,7 +1142,7 @@ CLASS unit_tests IMPLEMENTATION.
       cl_aunit_assert=>fail( msg = 'Is before or equal check #03' ).
     ENDIF.
 
-    IF o_other->is_before_or_equal( pi_o_datetime = o_this pi_ignore_time = abap_false ).
+    IF o_other->is_before_or_equal( io_datetime = o_this iV_ignore_time = abap_false ).
       cl_aunit_assert=>fail( msg = 'Is before or equal check #03' ).
     ELSE.
       " Works as expected...
@@ -1171,7 +1171,7 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other = o_this->clone( )->add_seconds( -1 ).
 
-    IF o_this->is_after( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_after( io_datetime = o_other iv_ignore_time = abap_false ).
       " Works as expected...
     ELSE.
       cl_aunit_assert=>fail( msg = 'Is after check #03' ).
@@ -1179,7 +1179,7 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other = o_this->clone( )->add_seconds( 1 ).
 
-    IF o_this->is_after( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_after( io_datetime = o_other iv_ignore_time = abap_false ).
       cl_aunit_assert=>fail( msg = 'Is after check #03' ).
     ELSE.
       " Works as expected...
@@ -1208,7 +1208,7 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other = o_this->clone( ).
 
-    IF o_this->is_after_or_equal( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_after_or_equal( io_datetime = o_other iv_ignore_time = abap_false ).
       " Works as expected...
     ELSE.
       cl_aunit_assert=>fail( msg = 'Is after or equal check #03' ).
@@ -1216,7 +1216,7 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other->add_seconds( 1 ).
 
-    IF o_this->is_after_or_equal( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_after_or_equal( io_datetime = o_other iv_ignore_time = abap_false ).
       cl_aunit_assert=>fail( msg = 'Is after or equal check #04' ).
     ELSE.
       " Works as expected...
@@ -1224,7 +1224,7 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other = o_this->clone( )->add_seconds( - 1 ).
 
-    IF o_this->is_after_or_equal( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_after_or_equal( io_datetime = o_other iv_ignore_time = abap_false ).
       " Works as expected...
     ELSE.
       cl_aunit_assert=>fail( msg = 'Is after or equal check #05' ).
@@ -1259,7 +1259,7 @@ CLASS unit_tests IMPLEMENTATION.
       cl_aunit_assert=>fail( msg = 'Is equal check #03' ).
     ENDIF.
 
-    IF o_this->is_equal( pi_o_datetime = o_other pi_ignore_time = abap_false ).
+    IF o_this->is_equal( io_datetime = o_other iv_ignore_time = abap_false ).
       cl_aunit_assert=>fail( msg = 'Is equal check #04' ).
     ELSE.
       " Works as expected...
@@ -1274,10 +1274,10 @@ CLASS unit_tests IMPLEMENTATION.
     o_this->begin_of_year( )->begin_of_day( ).
 
     " Create a list with all 12 month in a year
-    DATA(t_datetime_list) = zcl_datetime=>create_list( pi_o_start         = o_this
-                                                         pi_increment_field = zcl_datetime=>c_fields-month
-                                                         pi_increment_value = 1
-                                                         pi_num_of_elements = 12 ).
+    DATA(t_datetime_list) = zcl_datetime=>create_list( io_start         = o_this
+                                                         iv_increment_field = zcl_datetime=>c_fields-month
+                                                         iv_increment_value = 1
+                                                         iv_num_of_elements = 12 ).
 
     cl_aunit_assert=>assert_equals( act = lines( t_datetime_list )
                                     exp = 12
@@ -1332,10 +1332,10 @@ CLASS unit_tests IMPLEMENTATION.
                                     msg = 'Create list check #13' ).
 
     " Creating date list with all 31 days of january
-    t_datetime_list = zcl_datetime=>create_list( pi_o_start         = o_this
-                                                   pi_increment_field = zcl_datetime=>c_fields-day
-                                                   pi_increment_value = 1
-                                                   pi_num_of_elements = 31 ).
+    t_datetime_list = zcl_datetime=>create_list( io_start         = o_this
+                                                   iv_increment_field = zcl_datetime=>c_fields-day
+                                                   iv_increment_value = 1
+                                                   iv_num_of_elements = 31 ).
 
     cl_aunit_assert=>assert_equals( act = lines( t_datetime_list )
                                     exp = 31
@@ -1374,7 +1374,7 @@ CLASS unit_tests IMPLEMENTATION.
   METHOD sub_hours.
 
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->sub_hours( 8 ).
 
@@ -1406,7 +1406,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD sub_minutes.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->sub_minutes( 8 ).
 
@@ -1449,7 +1449,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD sub_seconds.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307'  pi_time = '060000' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307'  iv_time = '060000' ).
 
     o_datetime->sub_seconds( 8 ).
 
@@ -1473,7 +1473,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD sub_weeks.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' ).
 
     o_datetime->sub_weeks( 1 ).
 
@@ -1495,7 +1495,7 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD sub_years.
 
-    DATA(o_datetime) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_datetime) = zcl_datetime=>from_date( iv_date = '20210307' ).
 
     o_datetime->sub_years( 1 ).
 
@@ -1517,28 +1517,28 @@ CLASS unit_tests IMPLEMENTATION.
 
   METHOD diff.
 
-    DATA(o_this) = zcl_datetime=>from_date( pi_date = '20210307' ).
+    DATA(o_this) = zcl_datetime=>from_date( iv_date = '20210307' ).
     DATA(o_other) = o_this->clone( )->add_hours( 36 ).
 
 
-    DATA(diff) = o_this->diff( pi_o_datetime = o_other
-                               pi_field      = zcl_datetime=>c_fields-day ).
+    DATA(diff) = o_this->diff( io_datetime = o_other
+                               iv_field      = zcl_datetime=>c_fields-day ).
 
     cl_aunit_assert=>assert_equals( act = diff
                                     exp = CONV zcl_datetime=>ty_diff( '1.5' )
                                     msg = 'Diff check #01' ).
 
-    diff = o_this->diff( pi_o_datetime = o_other
-                         pi_field      = zcl_datetime=>c_fields-day
-                         pi_round_mode = zcl_datetime=>c_rouding-round_ceiling ).
+    diff = o_this->diff( io_datetime = o_other
+                         iv_field      = zcl_datetime=>c_fields-day
+                         iv_round_mode = zcl_datetime=>c_rouding-round_ceiling ).
 
     cl_aunit_assert=>assert_equals( act = diff
                                     exp = CONV zcl_datetime=>ty_diff( '2' )
                                     msg = 'Diff check #02' ).
 
-    diff = o_this->diff( pi_o_datetime = o_other
-                         pi_field      = zcl_datetime=>c_fields-day
-                         pi_round_mode = zcl_datetime=>c_rouding-round_down ).
+    diff = o_this->diff( io_datetime = o_other
+                         iv_field      = zcl_datetime=>c_fields-day
+                         iv_round_mode = zcl_datetime=>c_rouding-round_down ).
 
     cl_aunit_assert=>assert_equals( act = diff
                                     exp = CONV zcl_datetime=>ty_diff( '1' )
@@ -1546,8 +1546,8 @@ CLASS unit_tests IMPLEMENTATION.
 
     o_other = o_this->clone( )->add_hours( 44 ).
 
-    diff = o_this->diff( pi_o_datetime = o_other
-                         pi_field      = zcl_datetime=>c_fields-day ).
+    diff = o_this->diff( io_datetime = o_other
+                         iv_field      = zcl_datetime=>c_fields-day ).
 
     cl_aunit_assert=>assert_equals( act = diff
                                     exp = CONV zcl_datetime=>ty_diff( '1.833333333333333' )
@@ -1556,8 +1556,8 @@ CLASS unit_tests IMPLEMENTATION.
     o_this  = zcl_datetime=>from_date( '20210101' ).
     o_other = zcl_datetime=>from_date( '20211231' ).
 
-    diff = o_this->diff( pi_o_datetime = o_other
-                         pi_field      = zcl_datetime=>c_fields-month ).
+    diff = o_this->diff( io_datetime = o_other
+                         iv_field      = zcl_datetime=>c_fields-month ).
 
   ENDMETHOD.
 
